@@ -26,7 +26,7 @@ const spawnWindow = () => {
         y: 23,
         show: false,
         frame: false,
-        icon: `./img/${process.platform === "win32" ? "favicon.ico" : "statsify.png"}`,
+        icon: path.join(__dirname, "img", process.platform === "win32" ? "favicon.ico" : "statsify.png"),
         webPreferences: {
             contextIsolation: false,
             nodeIntegration: true,
