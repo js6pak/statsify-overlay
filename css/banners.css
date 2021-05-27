@@ -1,0 +1,115 @@
+.updateBanner {
+    color: #FFF;
+    font-family: "Poppins", sans-serif;
+    width: 60%;
+    margin: auto;
+    margin-top: 5%;
+    border-color: rgba(33, 33, 33, 0.7);
+    border-width: 2px;
+    border-style: solid;
+    border-radius: 10px;
+    background-color: rgba(22, 22, 22, 0.7);
+}
+
+.update-header {
+    background-color: rgba(0, 0, 0, 0.4);
+    border-bottom: 2px solid rgba(33, 33, 33, 0.7);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    padding: 10px;
+    width: 100%;
+    font-size: 14px;
+    font-weight: bold;
+    display: inline-block;
+    vertical-align: middle;
+    margin-bottom: 10px;
+}
+
+.update-header img {
+    float: right;
+}
+
+.update-content {
+    padding: 10px;
+    font-size: 14px;
+}
+
+.updateBanner img {
+    padding-top: .25rem;
+    padding-bottom: .25rem;
+    width: auto;
+}
+
+.update-footer {
+    background-color: var(--card-bg);
+    border-bottom: 2px solid var(--card-border);
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+
+    padding: 5px;
+}
+
+.alert {
+    font-family: "Poppins", sans-serif;
+    width: 60%;
+    margin: auto;
+    margin-top: 5%;
+    border-color: var(--card-border);
+    border-width: 2px;
+    border-style: solid;
+    border-radius: 10px;
+    background-color: var(--card-bg);
+}
+
+.alertBanner {
+    font-family: "Poppins", sans-serif;
+    width: 60%;
+    margin: auto;
+    margin-top: 5%;
+    border-color: var(--card-border);
+    border-width: 2px;
+    border-style: solid;
+    border-radius: 10px;
+    background-color: var(--card-bg);
+}
+
+.alert-header {
+    background-color: var(--card-bg);
+    border-bottom: 2px solid var(--card-border);
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    padding: 10px;
+    width: 100%;
+    font-size: 14px;
+    font-weight: bold;
+    display: inline-block;
+    vertical-align: middle;
+    margin-bottom: 10px;
+}
+
+.alert-header img {
+    float: right;
+    width: 16;
+    height: 16;
+}
+
+.alert-content {
+    padding: 10px;
+    font-size: 14px;
+}
+
+.alert img {
+    padding-top: .25rem;
+    padding-bottom: .25rem;
+    width: 16;
+    height: 16;
+}
+
+.alert-footer {
+    background-color: var(--card-footer);
+    border-bottom: 2px solid var(--card-border);
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+
+    padding: 5px;
+}

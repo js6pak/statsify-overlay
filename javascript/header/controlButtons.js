@@ -1,17 +1,16 @@
-const electron = require('electron')
+const electron = require('electron');
 const { remote } = electron
 
 const closeWindow = () => {
     window.close();
-    proccess.exit()
+    process.exit()
 }
 
 var maximized = false;
 
 const maximizeWindow = () => {
     document.getElementById("body").classList.remove("hidden");
-    body.style.backgroundColor = `rgba(0, 0, 0, ${readFromStorage("opacity") || 0.4})`
-    header.style.backgroundColor = `rgba(0, 0, 0, ${(readFromStorage("opacity") || 0.4) + 0.05})`
+
     var window = remote.getCurrentWindow()
     if(!maximized) {
         window.maximize()
@@ -28,8 +27,10 @@ const minimizeWindow = () => {
     window.minimize();
 }
 
-const hideWindow = () => {
-    if (readFromStorage("toggleNotifs")) {
+const hideWindow = (showNotification) => {
+    if (showNotification == undefined) showNotification = true;
+
+    if (read("notifications") && showNotification) {
         const hideNotif = new Notification('Statsify', {
             body: 'Overlay has been hidden.\nType \'/w .show\' to show it again.',
             icon: './img/statsify.png',
@@ -42,7 +43,16 @@ const hideWindow = () => {
 
 }
 
-const showWindow = () => {
+const showWindow = (forceShown = false) => {
    var window = remote.getCurrentWindow();
    if (window.isVisible() == false) window.showInactive()
+   if(forceShown) tableUpdater()
+}
+
+const resetWindow = () => {
+    var window = remote.getCurrentWindow();
+    window.setSize(750, 460);
+
+    resetPlayers()
+    resetCache()
 }

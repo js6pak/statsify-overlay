@@ -7,10 +7,21 @@
   <title>Statsify Overlay</title>
 
   <!-- Stylesheets -->
-  <link rel="stylesheet"
-    href="https://fonts.googleapis.com/css?family=Poppins:300,400,700|Roboto:300,400,700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,700|Roboto:300,400,700&display=swap">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/themes/classic.min.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/themes/monolith.min.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/themes/nano.min.css"/> 
+  <link rel="stylesheet" href="./css/style.css">
+  <link rel="stylesheet" href="./css/table.css">
+  <link rel="stylesheet" href="./css/scrollbar.css">
+  <link rel="stylesheet" href="./css/hover.css">
+  <link rel="stylesheet" href="./css/header.css">
+  <link rel="stylesheet" href="./css/banners.css">
+  <link rel="stylesheet" href="./css/settings/menu.css">
+  <link rel="stylesheet" href="./css/settings/boxes.css">
+  <link rel="stylesheet" href="./css/settings/colorpicker.css">
+  <link rel="stylesheet" href="./css/settings/alerts.css">
 
   <!-- Scripts -->
   <script>delete module.exports</script>
@@ -18,132 +29,134 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 </head>
-
 <header>
-  <div class="topnav" id ="topnav" style="-webkit-app-region: drag;">
-    <a id="header-text"><img src="img/statsify.png"> <span style="color: #498FC7">STATSIFY</span> <span style="color: #D0EDFB">OVERLAY</span></a>
-    <img onclick="toggleMenu()" class="settings-icon" style="-webkit-app-region: no-drag" src="img/icons/settings.png"/>
-    <img onclick="shell.openExternal('https://statsify.net/discord');" class="discord-icon" style="-webkit-app-region: no-drag" src="img/icons/discord.png"/>
-    <img onclick="openTooltip()" class="info-icon" style="-webkit-app-region: no-drag" src="img/icons/info.png"/>
-    <input class="search" type="text" id="playerSearchField" placeholder="🔍 Input Username" style="-webkit-app-region: no-drag" />
-    <div class="topnav buttons">
-      <button class="dot yellow-button" style="-webkit-app-region: no-drag; background-color: #FDBC40;" onclick="minimizeWindow()"></button>
-      <button class="dot green-button" style="-webkit-app-region: no-drag; background-color: #35C749;" onclick="maximizeWindow()"></button>
-      <button class="dot red-button" style="-webkit-app-region: no-drag; background-color: #FC5753;" onclick="closeWindow()"></button>
+  <div class="nav-bar" id ="topnav" style="-webkit-app-region: drag!important;">
+    <a id="header-text"><img class="logo" src="img/statsify.png"> <span style="color: #498FC7">STATSIFY</span> <span style="color: #D0EDFB">OVERLAY</span></a>
+    <img onclick="toggleMenu()" id="setting-icon" class="header-icons" style="-webkit-app-region: no-drag" src="img/icons/settings.png"/ title="Open/Close Settings">
+    <img onclick="shell.openExternal('https://statsify.net/discord');" class="header-icons" style="-webkit-app-region: no-drag" src="img/icons/discord.png"/ title="Statsify Discord">
+    <img onclick="openTooltip()" class="header-icons" style="-webkit-app-region: no-drag" src="img/icons/info.png"/ title="Info">
+    <img onclick="fullscreen()" class="header-icons" style="-webkit-app-region: no-drag" src="img/icons/fullscreen.png" id="fullscreener" title="Fullscreen">
+    <img onclick="resetWindow()" class="header-icons" style="-webkit-app-region: no-drag" src="img/icons/reload.png" title="Reset Overlay Size">
+    <input class="search" type="text" id="playerSearchField" placeholder="🔍 Search" style="-webkit-app-region: no-drag; min-width: 75px; max-width: 125px;" onkeypress="this.style.width = (25+(this.value.length + 1) * 8) + 'px';" maxLength="16"/>
+    <div class="nav-bar control-buttons">
+      <button class="dot" id="minimizeWindow" style="-webkit-app-region: no-drag;" onclick="minimizeWindow()" title="Minimize Overlay"></button>
+      <button class="dot" id="maximizeWindow" style="-webkit-app-region: no-drag;" onclick="maximizeWindow()" title="Maximize Overlay"></button>
+      <button class="dot" id="closeWindow" style="-webkit-app-region: no-drag;" onclick="closeWindow()" title="Close Overlay"></button>
     </div>
   </div>
   <div id="infoMessage"></div>
 </header>
-
+<div id="statpixel" class="real-container">
+<div id="faq-spacer"></div>
 <div id="faq-tooltip" class="faq-tooltip hidden"></div>
-
-<div class="menu hidden" id="menu">
-  <div id="bannerMessage"><h1>Settings</h1><br></div>
-  <br>
-  <select id="logMode" style="-webkit-app-region: no-drag" onclick="clientSwitcher()">
-    <option value="vf" id="vfOption">Vanilla/Forge</option>
-    <option value="bc" id="bcOption">Badlion Client</option>
-    <option value="lc" id="lcOption">Lunar Client</option>
-    <option value="plc" id="plcOption">PvPLounge Client</option>
-  </select>
-  <button id="path-input" style="-webkit-app-region: no-drag" onclick="customPathSubmitter()"><img src = "./img/icons/folder_open.png"/> Manually Select Log</button>
-  <br>
-  <br>
-  <select id="sortMode" style="-webkit-app-region: no-drag; width: 30%" onclick="sortSwitcher()">
-    <option value="threat" id="threatOption">Sort by Threat</option>
-    <option value="level" id="levelOption">Sort by Level</option>
-    <option value="fkdr" id="fkdrOption">Sort by FKDR</option>
-    <option value="ws" id="wsOption">Sort by Winstreak</option>
-  </select>
-  <select id="modeSwitch" style="-webkit-app-region: no-drag; width: 30%" onclick="modeSwitcher()">
-    <option value="overall" id="overallOption">Overall</option>
-    <option value="solo" id="soloOption">Solo</option>
-    <option value="doubles" id="doublesOption">Doubles</option>
-    <option value="threes" id="threesOption">Threes</option>
-    <option value="fours" id="foursOption">Fours</option>
-    <option value="4v4" id="4v4Option">4v4</option>
-  </select>
-  <br>
-  <br>
-  <input type="text" id="apiKeyField" placeholder="No saved API key" style="-webkit-app-region: no-drag"></input> <button type="submit" style="-webkit-app-region: no-drag" onclick="apiKeySubmitter()">Save</button>
-  <br>
-  <div class="rangeSliders" style="-webkit-app-region: no-drag">
-    <p id="opacityValue">Opacity: </p>
-    <input type="range" min="0" max="100" class="rangeSlider" id="opacitySlider">
+<div class="menu hidden" style="-webkit-app-region: no-drag" id="menu">
+  <div id="indepth-options" class="indepth-options hidden"> 
+    <button style="-webkit-app-region: no-drag" class="indepth-options-exit"onclick="closeInDepthSettings()"><img src="img/icons/left.png"></img></button>
+    <button style="-webkit-app-region: no-drag" class="indepth-options-default" id="resetButton">Reset Settings</button>
+    <div id="options-info"></div>
   </div>
-  <br>
-  <div class="sliders">
-    <label class="switch" style="-webkit-app-region: no-drag">
-      <input type="checkbox" id="whoSwitchOption" onclick="whoSwitch()">
-      <span class="slider round"></span>
-      <p style="position: relative; left: -120px; top: -15px; width: 120px"><span title="Automatically does '/who' when joining a game. Use at your own risk." style="-webkit-app-region: no-drag">Auto Who*: </span></p>
-    </label>
-    <br>
-    <label class="switch" style="-webkit-app-region: no-drag">
-      <input type="checkbox" id="hideSwitchOption" onclick="hideSwitch()">
-      <span class="slider round"></span>
-      <p style="position: relative; left: -120px; top: -15px; width: 120px"><span title="Automatically hides the overlay after 20 seconds of inactivity. Do /who for it to return." style="-webkit-app-region: no-drag">Auto Hide*: </span></p>
-    </label>
-    <br>
-    <label class="switch" style="-webkit-app-region: no-drag">
-      <input type="checkbox" id="guildSwitchOption" onclick="guildSwitch()">
-      <span class="slider round"></span>
-      <p style="position: relative; left: -120px; top: -15px; width: 120px"><span title="Adds guild related data to the overlay. [USES LOTS OF API REQUESTS]" style="-webkit-app-region: no-drag">Guild Tag*: </span></p>
-    </label>
-    <br>
-    <label class="switch" style="-webkit-app-region: no-drag">
-      <input type="checkbox" id="lobbyChatOption" onclick="lobbySwitch()">
-      <span class="slider round"></span>
-      <p style="position: relative; left: -129px; top: -15px; width: 125px"><span title="Adds the stats of people who talk in chat. Useful for finding parties in lobby 1." style="-webkit-app-region: no-drag">Lobby Chat*: </span></p>
-    </label>
-    <br>
-    <label class="switch" style="-webkit-app-region: no-drag">
-      <input type="checkbox" id="partyStuffOption" onclick="partySwitch()">
-      <span class="slider round"></span>
-      <p style="position: relative; left: -125px; top: -15px; width: 125px"><span title="Adds the stats of people who party you, join your party, in your party, etc. Basically checks the stats of everything party related." style="-webkit-app-region: no-drag">Party Info*: </span></p>
-    </label>
-    <br>
-    <label class="switch" style="-webkit-app-region: no-drag">
-      <input type="checkbox" id="resizeOption" onclick="autoResize()">
-      <span class="slider round"></span>
-      <p style="position: relative; left: -185px; top: -15px; width: 180px"><span title="[! BETA !] Changes window height depending on how many players." style="-webkit-app-region: no-drag">Auto Scale [BETA]*: </span></p>
-    </label>
-    <br>
-    <label class="switch" style="-webkit-app-region: no-drag">
-      <input type="checkbox" id="doNotDisturb" onclick="doNotDisturb()">
-      <span class="slider round"></span>
-      <p style="position: relative; left: -155px; top: -15px; width: 150px"><span title="Toggles notifications from the overlay, ex: hide notification" style="-webkit-app-region: no-drag">Notifications*: </span></p>
-    </label>
+  <div id="settings" class="hidden">
+    <div id="bannerMessage"><h1 style="color: #fff">Settings</h1><br></div>
+      <h4 class="settingsHeader">Client/Launcher</h4>
+      <select id="logMode" style="width: 30%" onchange="clientSwitcher()">
+        <option value="vf" id="vfOption">Forge/Vanilla</option>
+        <option value="bc" id="bcOption">Badlion Client</option>
+        <option value="lc" id="lcOption">Lunar Client</option>
+        <option value="plc" id="plcOption">PvPLounge Client</option>
+      </select>
+      <button id="path-input" class="manualSelect" style="width: 30%" onclick="customPathSubmitter()">
+        <p #id="fileText">Custom Path</p><img src="./img/icons/folder_open.png"/>
+      </button>
+      <br>
+      <h4 class="settingsHeader">Stats</h4>
+      <select id="sortMode" style="width: 30%" onchange="sortSwitcher()">
+        <option value="threat" id="threatOption">Sort by Threat/Index</option>
+        <option value="level" id="levelOption">Sort by Bedwars Level</option>
+        <option value="hLevel" id="hLevelOption">Sort by Hypixel Level</option>
+        <option value="fkdr" id="fkdrOption">Sort by FKDR</option>
+        <option value="ws" id="wsOption">Sort by Winstreak</option>
+      </select>
+      <select id="modeSwitch" style="width: 30%" onchange="modeSwitcher()">
+        <option value="overall" id="overallOption">Overall Stats</option>
+        <option value="solo" id="soloOption">Solo Stats</option>
+        <option value="doubles" id="doublesOption">Doubles Stats</option>
+        <option value="threes" id="threesOption">Threes Stats</option>
+        <option value="fours" id="foursOption">Fours Stats</option>
+        <option value="4v4" id="4v4Option">4v4 Stats</option>
+      </select>
+      <br>
+      <h4 class="settingsHeader">API Key</h4>
+      <input type="text" id="apiKeyField" maxLength="36" pattern="\S{8}-\S{4}-\S{4}-\S{4}-\S{12}" placeholder="Input API Key ('/api new')"></input> 
+      <button type="submit" class="apiKeySubmitter" onclick="apiKeySubmitter()">Save</button>
+      <br>
+      <div class="rangeSliders">
+        <h4 class="settingsHeader">Opacity</h4>
+        <p id="opacityValue"></p>
+        <input type="range" min="0" max="100" class="rangeSlider" id="opacitySlider">
+      </div>
+      <br>
+      <h4 class="settingsHeader">Modules</h4>
+      <table id="settingsItems">
+        <tr></tr>
+      </table>
+      <footer id="creditFooter"></footer>           
   </div>
-  <footer id="creditFooter" style="-webkit-app-region: no-drag"></footer>           
 </div>
 
 <body id="body" style="-webkit-app-region: no-drag">
-  <table id="playerTable">
-    <tr>
-      <th></th>
-      <th class="white shadow">PLAYER</th>
-      <th class="white shadow">TAG</th>
-      <th class="white shadow">WS</th>
-      <th class="white shadow">WINS</th>
-      <th class="white shadow">FINALS</th>
-      <th class="white shadow">FKDR</th>
-      <th class="white shadow">WLR</th>
-      <th class="white shadow">BBLR</th>
-    </tr>
-  </table>
-  <div id="updateBanner" />
+    <table id="playerTable">
+      <tr>
+        <th id= "iconRow" class="iconRow"></th>
+        <th></th>
+        <th class="tableHeader">PLAYER</th>
+        <th class="tableHeader">TAG</th>
+        <th class="tableHeader">WS</th>
+        <th class="tableHeader">WINS</th>
+        <th class="tableHeader">FINALS</th>
+        <th class="tableHeader">FKDR</th>
+        <th class="tableHeader">WLR</th>
+        <th class="tableHeader">BBLR</th>
+      </tr>
+    </table>
+    <div id="updateBanner" />
+  </div>
 </body>
 
+<script src="javascript/misc/macFix.js"></script>
 <script src="utils/misc.js"></script>
 <script src="utils/bedwars.js"></script>
-<script src="js/settingsConfig.js"></script>
-<script src="js/playerFetcher.js"></script>
-<script src="js/playerUpdater.js"></script>
-<script src="js/tableUpdater.js"></script>
-<script src="js/controlButtons.js"></script>
-<script src="js/dropdownRelease.js"></script>
-<script src="js/getReleases.js"></script>
-<script src="js/faq.js"></script>
+
+<script src="javascript/settings/settingsConfig.js"></script>
+
+<script src="javascript/settings/dropdowns/client.js"></script>
+<script src="javascript/settings/dropdowns/mode.js"></script>
+<script src="javascript/settings/dropdowns/sort.js"></script>
+
+<script src="javascript/settings/forms/apiKey.js"></script>
+<script src="javascript/settings/forms/manualClientPicker.js"></script>
+
+<script src="javascript/settings/sliders/opacity.js"></script>
+
+<script src="javascript/settings/boxes/makeBoxes.js"></script>
+<script src="javascript/settings/boxes/slider.js"></script>
+<script src="javascript/settings/boxes/threatPicker.js"></script>
+<script src="javascript/settings/boxes/toggle.js"></script>
+<script src="javascript/settings/boxes/reset.js"></script>
+<script src="javascript/settings/boxes/table.js"></script>
+
+<script src="javascript/playerFetcher.js"></script>
+<script src="javascript/playerUpdater.js"></script>
+<script src="javascript/tableUpdater.js"></script>
+
+<script src="javascript/misc/tabToShow.js"></script>
+<script src="javascript/misc/fullscreen.js"></script>
+
+<script src="javascript/header/controlButtons.js"></script>
+<script src="javascript/header/faq.js"></script>
+<script src="javascript/header/search.js"></script>
+<script src="javascript/header/uiButtons.js"></script>
+
+<script src="javascript/update/dropdownRelease.js"></script>
+<script src="javascript/update/getReleases.js"></script>
 
 </html>

@@ -1,0 +1,105 @@
+.skull {
+    margin-top: -4px;
+    height: 16px;
+    width: 16px;
+    filter: drop-shadow(2px 2px 0px rgba(0, 0, 0, 0.4));
+}
+
+table {
+    border-collapse: collapse;
+    min-width: 100%;
+    position: relative;
+}
+
+td,
+th {
+    border: none;
+    font-family: var(--mc-font-family);
+    padding: 1px;
+    padding-bottom: 1px;
+    padding-right: 6px;
+    font-weight: 80;
+    text-align: left;
+}
+
+td {
+    font-size: var(--mc-font-size);
+    position: relative;
+}
+
+tr {
+    position: relative;
+}
+
+th {
+    padding-top: 5px;
+    font-size: calc(var(--mc-font-size) + 8px);
+}
+
+.iconRow {
+    width: 20px;
+    left: 3px;
+    filter: drop-shadow(2px 2px 0px rgba(0, 0, 0, 0.4));
+}
+
+.indexRow {
+    font-size: var(--mc-font-size);
+    width: 20px;
+    left: 5px;
+    color: #FFF !important;
+}
+
+.headRow {
+    left: 4px;
+}
+.tableHeader {
+    font-size: var(--mc-font-size);
+    color: #FFF;
+    text-shadow: calc(var(--mc-font-size)/10)px calc(var(--mc-font-size)/10)px #3F3F3F;
+}
+
+.tooltip {
+    font-size: var(--mc-font-size);
+    font-family: var(--mc-font-family);
+    opacity: 1;
+    position: relative;
+    display: inline-block;
+    font-weight: 80;
+    text-align: left;
+    z-index: 2;
+}
+
+.tooltiptext {
+    display: none;
+    visibility: hidden;
+    opacity: 0;
+
+    background: #120211;
+    padding: 5px;
+    padding-bottom: 3px;
+    border-radius: 5px;
+    border: 1px solid #25015b;
+    line-height: 17px;
+    left: 350px;
+    padding-right: 12px;
+    width: max-content;
+    font-size: var(--mc-font-size);
+
+    position: absolute;
+}
+
+.playerBadge {
+    max-width: 16px;
+    max-height: 16px;
+    margin-bottom: 3px;
+    
+    padding-right: 0 !important;
+}
+
+.IGN {
+    max-width: 375px;
+}
+
+.faqTableHeader {
+    font-size: var(--mc-font-size) !important;
+}

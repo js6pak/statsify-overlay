@@ -7,7 +7,7 @@ var keyMax;
 const addRequest = () => {
     if (keyCount != undefined && keyMax != undefined) {
         keyCount++
-        document.getElementById("creditFooter").innerHTML = `v${vers || [UNKNOWN]} | Requests: ${keyCount}/${keyMax}<br>${credits}`
+        document.getElementById("creditFooter").innerHTML = `v${vers || "0.0.0"} | Requests: ${keyCount}/${keyMax}<br>${credits}`
     }
 }
 
@@ -20,16 +20,24 @@ const getKey = async (key) => {
     })
 }
 
-const getPlayer = async (user) => {
-    addRequest()
-    if (keyCount >= keyMax + 5) return { throttle: true, username: user }
-    return new Promise(async resolve => {
-        const requestTime = Date.now()
-        const data = await fetch(`https://api.hypixel.net/player?key=${readFromStorage("api")}&name=${user}`)
-        try { var body = await data.json() } catch { resolve({ outage: true, username: user }) }
-        if (body.throttle) resolve({ throttle: true, username: user })
-        if (body.cause == "Invalid API key") resolve({ invalid: true, username: user })
-        if (body.success == false || body.player == null || !body.player.displayname) resolve({ exists: false, username: user })
+const timeout = async (ms) => new Promise(resolve => setTimeout(resolve, ms));
+const rNum = (min, max) => { return Math.floor(Math.random() * (max - min + 1) + min) };
+
+const getPlayer = async (user, backup) => {
+    const player = new Promise(async resolve => {
+        if (keyCount >= keyMax + 15) return resolve({ error: true, throttle: true, username: user })
+        addRequest();
+
+        const requestTime = Date.now();
+
+        const data = await fetch(`https://api.hypixel.net/player?key=${read("api")}${user.length > 16 ? `&uuid=` : `&name=`}${user}`)
+
+        try { var body = await data.json() } catch { resolve({ error: true, outage: true, username: backup || user }) }
+  
+        if (body.throttle) resolve({ error: true, throttle: true, username: backup || user })
+        else if (body.cause == "Invalid API key") resolve({ error: true, invalid: true, username: backup || user })
+        else if (body.cause == "You have already looked up this name recently") resolve({ error: true, repeat: true, username: backup || user, response: body })
+        else if (body.success == false || body.player == null || !body.player.displayname) resolve({ error: true, exists: false, username: backup || user })
         else {
             var player = body.player
             var bedwars = player.stats ? player.stats.Bedwars || {} : {}
@@ -44,10 +52,10 @@ const getPlayer = async (user) => {
                 inputtedUsername: origUsername,
                 displayName: `${formattedRank}${player.displayname}`,
                 chat: player.channel,
+                level: nwLevel(player.networkExp || 0),
 
                 rank: rank,
                 plus: plusColor,
-
                 stats: {
                     bedwars: {
                         level: getBwLevel(bedwars.Experience),
@@ -102,7 +110,7 @@ const getPlayer = async (user) => {
                             winstreak: bedwars.eight_two_winstreak || 0,
                             wins: bedwars.eight_two_wins_bedwars || 0,
                             losses: bedwars.eight_two_losses_bedwars || 0,
-                            wlr: ratio(bedwars.eight_two_wins_bedwars, bedwars.eight_one_losses_bedwars),
+                            wlr: ratio(bedwars.eight_two_wins_bedwars, bedwars.eight_two_losses_bedwars),
                             finalKills: bedwars.eight_two_final_kills_bedwars || 0,
                             finalDeaths: bedwars.eight_two_final_deaths_bedwars || 0,
                             fkdr: ratio(bedwars.eight_two_final_kills_bedwars, bedwars.eight_two_final_deaths_bedwars),
@@ -124,7 +132,7 @@ const getPlayer = async (user) => {
                             winstreak: bedwars.four_three_winstreak || 0,
                             wins: bedwars.four_three_wins_bedwars || 0,
                             losses: bedwars.four_three_losses_bedwars || 0,
-                            wlr: ratio(bedwars.four_three_wins_bedwars, bedwars.eight_one_losses_bedwars),
+                            wlr: ratio(bedwars.four_three_wins_bedwars, bedwars.four_three_losses_bedwars),
                             finalKills: bedwars.four_three_final_kills_bedwars || 0,
                             finalDeaths: bedwars.four_three_final_deaths_bedwars || 0,
                             fkdr: ratio(bedwars.four_three_final_kills_bedwars, bedwars.four_three_final_deaths_bedwars),
@@ -146,7 +154,7 @@ const getPlayer = async (user) => {
                             winstreak: bedwars.four_four_winstreak || 0,
                             wins: bedwars.four_four_wins_bedwars || 0,
                             losses: bedwars.four_four_losses_bedwars || 0,
-                            wlr: ratio(bedwars.four_four_wins_bedwars, bedwars.eight_one_losses_bedwars),
+                            wlr: ratio(bedwars.four_four_wins_bedwars, bedwars.four_four_losses_bedwars),
                             finalKills: bedwars.four_four_final_kills_bedwars || 0,
                             finalDeaths: bedwars.four_four_final_deaths_bedwars || 0,
                             fkdr: ratio(bedwars.four_four_final_kills_bedwars, bedwars.four_four_final_deaths_bedwars),
@@ -168,7 +176,7 @@ const getPlayer = async (user) => {
                             winstreak: bedwars.two_four_winstreak || 0,
                             wins: bedwars.two_four_wins_bedwars || 0,
                             losses: bedwars.two_four_losses_bedwars || 0,
-                            wlr: ratio(bedwars.two_four_wins_bedwars, bedwars.eight_one_losses_bedwars),
+                            wlr: ratio(bedwars.two_four_wins_bedwars, bedwars.two_four_losses_bedwars),
                             finalKills: bedwars.two_four_final_kills_bedwars || 0,
                             finalDeaths: bedwars.two_four_final_deaths_bedwars || 0,
                             fkdr: ratio(bedwars.two_four_final_kills_bedwars, bedwars.two_four_final_deaths_bedwars),
@@ -190,15 +198,31 @@ const getPlayer = async (user) => {
                 requestedAt: requestTime
             })
         }
-    })
+    });
+
+    const sniper = new Promise(async resolve => {
+        setTimeout(() => {
+            resolve({ error: true, sniper: false, outage: true })
+        }, 600);
+
+        const data = await fetch(`https://statsify.net/api/overlay/sniper?player=${user}`)
+
+        try { var body = await data.json() } catch { resolve({ error: true, sniper: false, outage: true }) };
+
+        resolve(body);
+    });
+
+    const [playerData, sniperData] = await Promise.all([player, sniper]);
+    playerData.sniper = sniperData;
+
+    return playerData;
 }
 
 const getGuild = async (uuid) => {
     addRequest()
-    if (keyCount >= keyMax + 5) return { throttle: true }
+    if (keyCount >= keyMax + 15) return { throttle: true }
     return new Promise(async resolve => {
-        const requestTime = Date.now()
-        const data = await fetch(`https://api.hypixel.net/guild?key=${readFromStorage("api")}&player=${uuid}`)
+        const data = await fetch(`https://api.hypixel.net/guild?key=${read("api")}&player=${uuid}`)
         try { var body = await data.json() } catch { resolve({ outage: true }) }
         if (body.throttle) resolve({ throttle: true })
         if (body.cause == "Invalid API key") resolve({ invalid: true })
@@ -208,10 +232,48 @@ const getGuild = async (uuid) => {
 
             body.guild.mcColor = getGuildTagColor(body.guild.tagColor);
 
+            if (body.guild.members) body.guild.members.forEach(member => cachedGuilds.set(member.uuid, body.guild));
             resolve(body.guild)
         }
     })
 }
+
+const getUUID = async (user) => {
+    const playerdb = new Promise(async resolve => {
+        const data = await fetch(`https://playerdb.co/api/player/minecraft/${user}`)
+
+        try { var body = await data.json() } catch { resolve(user) };
+        //console.log({ uuid: (body && body.data && body.data.player && body.data.player.raw_id) || user, username: (body && body.data && body.data.player.username) || user });
+        resolve({ uuid: (body && body.data && body.data.player && body.data.player.raw_id) || user, username: (body && body.data && body.data.player.username) || user });
+    });
+
+    const ashcon = new Promise(async resolve => {
+        const data = await fetch(`https://api.ashcon.app/mojang/v2/user/${user}`)
+
+        try { var body = await data.json() } catch { resolve(user) };
+        //console.log({ uuid: (body && body.uuid && body.uuid.replace(/-/g, '')) || user, username: (body && body.username) || user });
+        resolve({ uuid: (body && body.uuid && body.uuid.replace(/-/g, '')) || user, username: (body && body.username) || user });
+    });
+
+    return await Promise.race([playerdb, ashcon]);
+}
+
+const getVerified = async () => {
+    const body = await fetch('https://statsify.net/api/verified')
+    const data = await body.json()
+
+    if (data.success) write('verified', data.verified);
+}
+
+const pingAntisniper = async () => await fetch('https://statsify.net/api/overlay/sniper?player=ping')
+
+getVerified()
+pingAntisniper()
+
+setInterval(() => {
+    getVerified()
+    pingAntisniper()
+}, 600000);
 
 /* Randomly assign which order the credits are in on run */
 var authors = ["imconnorngl", "videogameking", "ugcodrr"]
@@ -219,23 +281,22 @@ authors = authors.sort(() => .5 - Math.random());
 var credits = `Made by ${authors[0]}, ${authors[1]} & ${authors[2]} © Statsify Inc.`
 
 /* API Counter */
-var api = readFromStorage("api")
-var vers = readFromStorage("version")
+var api = read("api")
+var vers = read("version")
 
 if (api) {
-    
-    const form =  document.getElementById("apiKeyField");
-    
+    const form = document.getElementById("apiKeyField");
+
     document.getElementById("apiKeyField").value = api
 
     getKey(api).then(keyStatus => {
         if (keyStatus.valid == true) {
             keyCount = 0
             keyMax = keyStatus.max || 120
-            
-            schedule.scheduleJob('1 * * * * *', function() {
+
+            schedule.scheduleJob('1 * * * * *', () => {
                 keyCount = 0
-                //player.throttle
+
                 document.getElementById("creditFooter").innerHTML = `v${vers || "0.0.0"} | Requests: ${keyCount}/${keyMax}<br>${credits}`
             });
 
@@ -243,6 +304,6 @@ if (api) {
         }
     })
 } else {
-    const form =  document.getElementById("apiKeyField");
+    const form = document.getElementById("apiKeyField");
     document.getElementById("creditFooter").innerHTML = `v${vers || "0.0.0"} | ${credits}`
 }

@@ -1,0 +1,139 @@
+header {
+    z-index: 10;
+}
+
+.nav-bar {
+    border-top-left-radius: var(--corner-round);
+    border-top-right-radius: var(--corner-round);
+
+    font-family: var(--high-res-font);
+    font-size: 18px;
+
+    position: fixed;
+    top: 0;
+
+    width: 100%;
+    height: 40px;
+
+    padding-top: 5px;
+    padding-left: 3px;
+
+    z-index: 10;
+    background-color: var(--header-opacity);
+}
+
+.logo {
+    padding-bottom: 3px;
+    padding-left: 3px;
+    width: 25px;
+    height: 25px;
+}
+
+.nav-bar a {
+    display: block;
+    font-family: "Poppins", sans-serif;
+    text-align: center;
+    text-decoration: none;
+    font-size: 18px;
+    margin-top: 3px;
+    display: inline-block;
+    height: 100%;
+    filter: drop-shadow(2px 2px 0px #242424);
+}
+
+.control-buttons {
+    padding-top: 3px;
+    padding-right: 10px;
+
+    text-align: right;
+    text-decoration: none;
+
+    background-color: rgba(0, 0, 0, 0);
+    z-index: -1;
+}
+
+.dot {
+    padding: 5px 5px;
+    height: 14px;
+    width: 14px;
+    border-radius: 50%;
+    border-style: none;
+    border-width: 0;
+    display: inline-block;
+    outline: none;
+}
+
+.header-icons {
+    width: 16px;
+    height: 16px;
+
+    cursor: pointer;
+    margin-bottom: 3px;
+    margin-right: 3px;
+}
+
+.faq-tooltip {
+    width: 80%;
+    background-color: var(--card-bg);
+
+    border-color:var(--card-border);
+    border-radius: 25px;
+    border-style: solid;
+    border-width: 2px;
+
+    color: #FFF;
+    font-size: var(--mc-font-size);
+    font-family: var(--mc-font-family);
+
+    z-index: 30;
+
+    margin: auto;
+    margin-bottom: 20px;
+    padding: 10px;
+}
+
+#minimizeWindow {
+    background-color: #FDBC40;
+}
+
+#maximizeWindow {
+    background-color: #35C749;
+}
+
+#closeWindow {
+    background-color: #FC5753;
+}
+
+.search {
+    font-family: var(--mc-font-family);
+    text-align: left;
+    font-size: 10px;
+
+    float: right;
+    margin-top: 1px;
+    margin-right: 90px;
+
+    width: 85px;
+    height: 75%;
+
+    padding: 10px;
+    color: #FFF;
+
+    background-color: rgba(0, 0, 0, 0);
+    border-radius: 20px;
+    border-color: rgba(255, 255, 255, 0.3);
+    border-width: 2px;
+    border-style: solid;
+
+    outline: none;
+    z-index: 1;
+}
+
+.search:focus {
+    border-color: rgba(255, 255, 255, 1);
+  }
+
+.arrow img {
+    margin: auto;
+    width: 40px;
+}

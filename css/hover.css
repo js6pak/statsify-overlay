@@ -1,0 +1,29 @@
+.dot:hover {
+    box-shadow: inset 0px 3px 0px 0px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes spin-animation {
+    0% {
+      transform: rotate(0deg)
+    }
+  
+    100% {
+      transform: rotate(359deg)
+    }
+  }
+
+#setting-icon:hover {
+    animation: spin-animation 1.44s infinite;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.tooltip:hover .tooltiptext {
+    display: inline;
+    visibility: visible;
+    opacity: 1;
+}
+
+.menu button:hover {
+    border: 2px solid white;
+}

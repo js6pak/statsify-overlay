@@ -1,0 +1,121 @@
+.pcr-app {
+    width: 16.25em !important;
+    background-color: #242424 !important;
+    filter: drop-shadow(3px 3px 0px rgba(0, 0, 0, 0.4));
+}
+
+.pcr-swatches, .pcr-swatches button {
+    filter: drop-shadow(2px 2px 0px rgba(0, 0, 0, 0.4));
+    margin: 0px 0px 0px 4px;
+    transition: 0s !important;
+}
+
+.pcr-current-color {
+    width: 100% !important;
+    border-radius: 0 !important; 
+    filter: drop-shadow(2px 2px 0px rgba(0, 0, 0, 0.4));
+}
+
+.pcr-last-color {
+    border-radius: 0 !important;
+    display: none !important;
+}
+
+.pcr-selection {
+    filter: drop-shadow(2px 2px 0px rgba(0, 0, 0, 0.4));
+}
+
+.pcr-slider {
+    filter: drop-shadow(2px 2px 0px rgba(0, 0, 0, 0.4));
+}
+
+.pcr-picker {
+    z-index: 100000;
+    border: 2px solid #363636 !important;
+}
+
+.pcr-button {
+    filter: drop-shadow(3px 3px 0px rgba(0, 0, 0, 0.4));
+    border: none !important;
+    top: 12px !important;
+    display: flex !important;
+    margin-left: 10px;
+    flex-direction: row;
+    justify-content: flex-end;
+    float: left;
+}
+
+.pcr-button:hover {
+    filter: drop-shadow(3px 3px 0px rgba(0, 0, 0, 0.6));
+    border: none !important;
+    border-radius: 0px !important;
+}
+
+.pcr-save {
+    display: none !important;
+}
+
+.pcr-result, .pcr-input, .pcr-cancel, .pcr-clear {
+    filter: drop-shadow(3px 3px 0px rgba(0, 0, 0, 0.4));
+    border-radius: 7px !important;
+}
+
+.pcr-cancel {
+    background: #CC3333 !important;
+}
+
+.pcr-clear {
+    background: #505050 !important;   
+}
+.indexCard {
+    background-color: #242424;
+    border-radius: 25px;
+    filter: drop-shadow(5px 5px 0px rgba(0, 0, 0, 0.4));
+    width: 70%;
+    height: 55px;
+    display: block;
+    margin: auto;
+}
+
+.indexInput {
+    float: left;
+    border-style: none !important;
+    outline: none !important;
+    border-bottom-style: solid !important;
+    width: 25% !important;
+    margin-left: 15px !important;
+    z-index: 100;
+}
+
+.color-picker {
+    float: right;
+    margin-right: 100px;
+}
+
+.colorRemove {
+    float: right;
+    border-style: none !important;
+    font-family: "Poppins" !important;
+    margin-right: 15px !important;
+    position: relative;
+    top: 8px;
+}
+
+.addButton {
+    width: 25% !important;
+    height: 30px !important;
+    border-radius: 5px;
+    display: flex !important;
+    flex-direction: row;
+    margin: auto;
+    justify-content: space-around;
+    top: 10px;
+    z-index: 3;
+    padding: 4px 4px !important;
+    margin-top: 20px !important;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}

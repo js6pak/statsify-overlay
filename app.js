@@ -10,8 +10,9 @@ if (require('electron-squirrel-startup')) return app.quit();
 app.once('ready', () => {
   const { width } = electron.screen.getPrimaryDisplay().workAreaSize
   window = new BrowserWindow({
-    width: 750,
+    width: 750, 
     height: 460,
+    minWidth: 500,
     transparent: true,
     x: width - 750,
     y: 23,
@@ -20,7 +21,6 @@ app.once('ready', () => {
     icon: "./img/favicon.ico",
   })
 
-  if (process.os == "darwin") app.dock.hide();
   window.setAlwaysOnTop(true, 'floating');
   window.setVisibleOnAllWorkspaces(true);
 

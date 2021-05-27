@@ -5,7 +5,7 @@ const updateAlert = (title, body, version) => {
         <div class="updateBanner">
             <div class="update-header">
             ${title}
-            <a href="#"><img  onclick="shell.openExternal('https://statsify.net/overlay');" src="./img/icons/download.png"/></a>
+            <a href="#"><img  onclick="shell.openExternal('https://statsify.net/overlay#download');" src="./img/icons/download.png"/></a>
             </div>
             <br>
             <div class="update-content">
