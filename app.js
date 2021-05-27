@@ -1,11 +1,13 @@
 const electron = require('electron')
 const { app, BrowserWindow } = electron
+const Store = require('electron-store');
 const path = require('path')
 const url = require('url')
 
 if (require('electron-squirrel-startup')) return app.quit();
 
 require('@electron/remote/main').initialize();
+Store.initRenderer();
 
 app.commandLine.appendSwitch('enable-transparent-visuals');
 
