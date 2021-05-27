@@ -3,6 +3,7 @@ var settingsList = [
     {
         title: 'Auto Who',
         defaultValue: true,
+        platforms: ["win32", "darwin"],
         image: 'keyboard.png',
         value: 'autoWho',
         description: `Automatically types '/who' when you enter a game. This means that the users that joined before you are included in the overlay. Use at your own risk!`
@@ -15,7 +16,7 @@ var settingsList = [
         html: `<p>Time taken to hide:</p><input type="text">`,
         description: `Automatically hides the overlay after a set amount of inactivity time has occured.`,
         extraOptions: [
-            {   
+            {
                 "title": "Hide After (ms)",
                 "type": {
                     "input": "slider",
@@ -36,7 +37,7 @@ var settingsList = [
         image: 'guild.png',
         description: `Adds guild information to players, which makes it easier for our algorithm to detect partys. However uses 2x the API Requests!`,
         extraOptions: [
-            {   
+            {
                 "title": "Guild Tags",
                 "type": {
                     "input": "toggle",
@@ -79,7 +80,7 @@ var settingsList = [
     {
         title: 'Tab To Show',
         defaultValue: false,
-        macDisabled: true,
+        platforms: ["win32"],
         value: 'tabToShow',
         image: 'tabToShow.png',
         description: `Press tab to either toggle or temporarily show the overlay. This helps easily opening the overlay again.`
@@ -93,7 +94,7 @@ var settingsList = [
             redraw: true
         },
         extraOptions: [
-            {   
+            {
                 "type": {
                     "input": "color",
                     "default": [
@@ -119,7 +120,7 @@ var settingsList = [
         value: 'appearance',
         image: 'appearance.png',
         extraOptions: [
-            {   
+            {
                 "title": "Round Corners",
                 "type": {
                     "input": "slider",
@@ -135,7 +136,7 @@ var settingsList = [
                     document.documentElement.style.setProperty('--corner-round', `${roundAmount}px`);
                 },
             },
-            {   
+            {
                 "title": "Limit Players Shown",
                 "type": {
                     "input": "slider",
@@ -147,7 +148,7 @@ var settingsList = [
                     "hover": "Control the amount of players that the overlay will show. Will bug out sometimes if 'reverse sort' is enabled so beware.",
                 }
             },
-            {   
+            {
                 "title": "HD Font",
                 "type": {
                     "input": "toggle",
@@ -163,7 +164,7 @@ var settingsList = [
                     document.documentElement.style.setProperty('--mc-font-size', `${hd ? 12 : 16}px`);
                 },
             },
-            {   
+            {
                 "title": "Shorten Tags",
                 "type": {
                     "input": "toggle",
@@ -237,7 +238,7 @@ var settingsList = [
             redraw: true
         },
         extraOptions: [
-            {   
+            {
                 "type": {
                     "input": "table",
                     "default": [
@@ -280,13 +281,11 @@ const parseTypeJS = data => {
 const groupedSettings = []
 
 settingsList = settingsList.filter((item) => {
-    if (process.platform == 'darwin') {
-        if (!item.macDisabled) return true;
-    } else return true;
+    return item.platforms?.includes(process.platform) ?? true;
 })
 
 while (settingsList.length > 0) {
-    const chunk = settingsList.splice(0,3)
+    const chunk = settingsList.splice(0, 3)
     groupedSettings.push(chunk)
 }
 
@@ -298,7 +297,7 @@ groupedSettings.forEach((item, index) => {
             value.extraOptions.forEach((item, index) => {
                 if (!item.type) return;
                 if (item.callback) item.callback();
-                if(read(`${item.type.section}_${item.type.value}`) == undefined) write(`${item.type.section}_${item.type.value}`, item.type.default);
+                if (read(`${item.type.section}_${item.type.value}`) == undefined) write(`${item.type.section}_${item.type.value}`, item.type.default);
             })
         }
     })
@@ -325,7 +324,7 @@ groupedSettings.forEach((item, index) => {
         const setButtonColor = () => {
             if (read(value.value) == undefined) {
                 write(value.value, value.default);
-                setButtonColor()  
+                setButtonColor()
             } else if (read(value.value) == true || value.alwaysEnabled) {
                 htmlItem.style['background-color'] = "#30a465"
                 htmlItem.style['border-color'] = "#FFF"
@@ -350,7 +349,7 @@ groupedSettings.forEach((item, index) => {
             menu.classList.remove('hidden')
             const settings = document.getElementById('settings')
             settings.classList.add('hidden')
- 
+
             const infoArea = document.getElementById('options-info')
             var html = `<h1 class="optionTitle">${value.title}</h1>
             <p class="optionDesc">${value.description || "No Description Set"}</p><br>`
@@ -359,16 +358,16 @@ groupedSettings.forEach((item, index) => {
             if (value.extraOptions) {
                 value.extraOptions.forEach((item, index) => {
                     if (!item.type) return;
-                    if(read(`${item.type.section}_${item.type.value}`) == undefined) write(`${item.type.section}_${item.type.value}`, item.type.default);
+                    if (read(`${item.type.section}_${item.type.value}`) == undefined) write(`${item.type.section}_${item.type.value}`, item.type.default);
 
                     let response = parseType(item);
-                    if(response != false) optionsHTML.push(response);
+                    if (response != false) optionsHTML.push(response);
                 })
             }
 
             infoArea.innerHTML = `${html}<div id="options-area">${optionsHTML.join("<br>")}</div>`;
             optionsHTML.forEach((item, index) => parseTypeJS(value.extraOptions[index]))
-            
+
             const resetButton = document.getElementById("resetButton");
             resetButton.addEventListener('click', () => {
                 reset(value);
@@ -380,11 +379,11 @@ groupedSettings.forEach((item, index) => {
                             reDraw = true;
                             newHtml.push(parseType(value.extraOptions[index]))
                         }
-    
+
                         if (reDraw) infoArea.innerHTML = `${html}<div id="options-area">${newHtml.join("<br>")}</div>`;
                     })
                 }
-                
+
                 optionsHTML.forEach((item, index) => parseTypeJS(value.extraOptions[index]))
             })
         })

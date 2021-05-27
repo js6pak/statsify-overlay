@@ -1,6 +1,4 @@
 const Store = require('electron-store');
-const { app, dialog } = require('electron').remote
-
 const store = new Store();
 
 const write = (key, value) => {
@@ -31,7 +29,7 @@ const sendHeader = (body, success = false) => {
     </div>
   `
 
-  setTimeout(() => document.getElementById("bannerMessage").innerHTML = `<h1>Settings</h1><br>`, 10000)
+    setTimeout(() => document.getElementById("bannerMessage").innerHTML = `<h1>Settings</h1><br>`, 10000)
 }
 
 

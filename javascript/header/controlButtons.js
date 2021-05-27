@@ -1,5 +1,4 @@
-const electron = require('electron');
-const { remote } = electron
+const remote = require('@electron/remote')
 
 const closeWindow = () => {
     window.close();
@@ -12,11 +11,10 @@ const maximizeWindow = () => {
     document.getElementById("body").classList.remove("hidden");
 
     var window = remote.getCurrentWindow()
-    if(!maximized) {
+    if (!maximized) {
         window.maximize()
         maximized = true;
-    }
-    else {
+    } else {
         maximized = false;
         window.unmaximize()
     }
@@ -35,18 +33,18 @@ const hideWindow = (showNotification) => {
             body: 'Overlay has been hidden.\nType \'/w .show\' to show it again.',
             icon: './img/statsify.png',
             silent: true
-         });
+        });
     }
 
     var window = remote.getCurrentWindow();
-    window.hide() 
+    window.hide()
 
 }
 
 const showWindow = (forceShown = false) => {
-   var window = remote.getCurrentWindow();
-   if (window.isVisible() == false) window.showInactive()
-   if(forceShown) tableUpdater()
+    var window = remote.getCurrentWindow();
+    if (window.isVisible() == false) window.showInactive()
+    if (forceShown) tableUpdater()
 }
 
 const resetWindow = () => {

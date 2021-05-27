@@ -1,3 +1,5 @@
+const { app } = require('@electron/remote')
+
 const fs = require('fs');
 const util = require('util');
 const child = require('child_process')
@@ -14,52 +16,52 @@ var autoWhoed = false;
 const keyCodeToKey = (key) => {
     const keys = {
         "2": "1",
-        "3": "2",      
+        "3": "2",
         "4": "3",
         "5": "4",
         "6": "5",
         "7": "6",
         "8": "7",
         "9": "8",
-        "10":  "9",
-        "11":  "0",
-        "12":  "-",
-        "13":  "=",
-        "16":  "q",
-        "17":  "w",
-        "18":  "e",
-        "19":  "r",
-        "20":  "t",
-        "21":  "y",
-        "22":  "u",
-        "23":  "i",
-        "24":  "o",
-        "25":  "p",
-        "26":  "[",
-        "27":  "]",
-        "30":  "a",
-        "31":  "s",
-        "32":  "d",
-        "33":  "f",
-        "34":  "g",
-        "35":  "h",
-        "36":  "j",
-        "37":  "k",
-        "38":  "l",
-        "39":  ";",
-        "40":  "'",
-        "41":  "`",
-        "43":  "\\",
-        "44":  "z",
-        "45":  "x",
-        "46":  "c",
-        "47":  "v",
-        "48":  "b",
-        "49":  "n",
-        "50":  "m",
-        "51":  ",",
-        "52":  ".",
-        "53":  "/",
+        "10": "9",
+        "11": "0",
+        "12": "-",
+        "13": "=",
+        "16": "q",
+        "17": "w",
+        "18": "e",
+        "19": "r",
+        "20": "t",
+        "21": "y",
+        "22": "u",
+        "23": "i",
+        "24": "o",
+        "25": "p",
+        "26": "[",
+        "27": "]",
+        "30": "a",
+        "31": "s",
+        "32": "d",
+        "33": "f",
+        "34": "g",
+        "35": "h",
+        "36": "j",
+        "37": "k",
+        "38": "l",
+        "39": ";",
+        "40": "'",
+        "41": "`",
+        "43": "\\",
+        "44": "z",
+        "45": "x",
+        "46": "c",
+        "47": "v",
+        "48": "b",
+        "49": "n",
+        "50": "m",
+        "51": ",",
+        "52": ".",
+        "53": "/",
         "144": "^",
         "145": "@",
         "146": ":",
@@ -78,8 +80,8 @@ const autoTypeWho = () => {
     try {
         controls = fs.readFileSync(`${app.getPath("home").replace(/\\/g, "\/")}/AppData/Roaming/.minecraft/options.txt`, {
             encoding: 'utf8'
-        }) 
-    } catch (e) { 
+        })
+    } catch (e) {
         controls = 'key_key.chat:20'
     }
 
@@ -87,11 +89,11 @@ const autoTypeWho = () => {
     const key = keyCodeToKey(chatKey.split(':')[1].trim());
 
     write('chatKey', key);
-   
+
     if (autoWhoToggle && autoWhoToggle == true) {
         setTimeout(() => {
             python(
-                fileJoin.join(__dirname, `python/${process.platform == 'darwin' ? "autoWho.app/Contents/MacOS/autoWho" : "autoWho/autoWho.exe"}`), 
+                fileJoin.join(__dirname, `python/${process.platform === 'darwin' ? "autoWho.app/Contents/MacOS/autoWho" : "autoWho/autoWho.exe"}`),
                 (err, data) => {
                     if (err) console.log(err)
                 }
@@ -105,10 +107,10 @@ const fixFormatting = (message) =>
         .replace(/✫|✪|⚝/g, '?')
         .replace(/§|¡±/g, '�')
 
-const clearFormatting = (message) => 
+const clearFormatting = (message) =>
     message
         .replace(/�[0-9A-FK-OR]/gi, '')
-        
+
 const readLogFile = async () => {
     var fileData = fs.fstatSync(fileLocation);
     var newSize = fileData.size;
@@ -118,7 +120,7 @@ const readLogFile = async () => {
         timesRead++
 
         fs.watch(read("path").split("/").slice(0, -1).join("/") /* Removes '/latest.log' */, (eventType, filename) => {
-            if(eventType === "rename" && filename === "latest.log") {
+            if (eventType === "rename" && filename === "latest.log") {
                 fs.open((read("path")), 'r', (err, fd) => {
                     fileLocation = fd;
                     mostRecentSize = 0;
@@ -167,7 +169,7 @@ const processLine = async line => {
     } else if (clearLine.includes(" ONLINE: ")) {
         var players = clearLine.split(" [CHAT] ONLINE: ")[1].split(", ")
         resetPlayers()
-        players.forEach((player, i) => addPlayer(player, i == players.length-1 || i  % rNum(1, 2) === 0 ? true : false))
+        players.forEach((player, i) => addPlayer(player, i == players.length - 1 || i % rNum(1, 2) === 0 ? true : false))
     } else if (clearLine.includes("Online Players(")) {
         lobbyMode = true;
         resetPlayers()
@@ -267,14 +269,14 @@ if (read("path")) {
 
     readLogs()
 } else {
-    var logFiles = [
+    let logFiles = [
         { name: "lunar", path: `/.lunarclient/offline/1.8/logs/` },
         { name: "vanilla", path: `/AppData/Roaming/.minecraft/logs/` },
         { name: "badlion", path: `/AppData/Roaming/.minecraft/logs/blclient/minecraft/` },
         { name: "pvplongue", path: `/AppData/Roaming/.pvplounge/logs/` }
-    ]
-    
-    if (process.platform == 'darwin') {     
+    ];
+
+    if (process.platform === 'darwin') {
         logFiles = [
             { name: "lunar", path: `/.lunarclient/offline/1.8/logs/` },
             { name: "vanilla", path: `/Library/Application Support/minecraft/logs/` },
@@ -308,5 +310,7 @@ if (read("path")) {
 
         readLogs()
 
-    } else toggleMenu()
+    } else {
+        toggleMenu();
+    }
 }
