@@ -1,23 +1,17 @@
 # Statsify Overlay
 
-An amazing bedwars overlay to check players Finals, Winstreak, FKDR, Nicks And more.
+A scuffed bedwars overlay, but with linux support.
 
-Here is an example below
+TODO:
 
-![Screenshot](https://imgur.com/wYWhs2m.png)
+- [x] (scuffed) electron version upgrade
+- [x] linux and appimage
+- [ ] fullscreen
+- [ ] companion forge mod (replacement for python autowho and tabshow)
 
-## Why should I use a bedwars overlay?
+### License concerns
 
-You should use an overlay because it helps you avoid snipers nicks, and sweaty players.
-
-You can find out if a player is partied or is a nick with the tags e.g:
-
-Party & Nicked
-
-## Where can I download the overlay?
-
-You can download the overlay here:
-
-[Overlay](https://statsify.net/overlay)
-
-> **NOTE**: MacOS and Linux are not availible currently but stay tuned for there release!
+In both [original](https://github.com/imconnorngl/overlay) and [closed sourced](https://statsify.net/overlay#download)
+statsify-overlay, the only place where license is mentioned is inside `package.json`'s `license` field. From my research
+it is not enough, so no matter what I do, improving on statsify overlay is not legally possible, if this repo is taken
+down with DMCA, oh well, who cares?
